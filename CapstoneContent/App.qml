@@ -5,14 +5,45 @@ import QtQuick
 import Capstone
 
 Window {
-    width: mainScreen.width
-    height: mainScreen.height
+    width: Constants.width
+    height: Constants.height
 
     visible: true
     title: "Capstone"
 
-    Screen01 {
-        id: mainScreen
+    HomeScreen {
+        id: homescreen
+        anchors.fill: parent
+
+        onGeneratePassRequested: camerapopup.open()
+    }
+
+    CameraPopup {
+        id: camerapopup
+        width: parent.width
+        height: parent.height
+
+        onOpened: clockTimer.start()
+
+        Timer {
+            id: clockTimer
+            interval: 2000
+            repeat: false
+            running: false
+
+            onTriggered: {
+                camerapopup.close()
+                passinfo.open()
+            }
+        }
+    }
+
+    PassInformation {
+        id: passinfo
+        width: parent.width
+        height: parent.height
+
+        onExportRequested: passinfo.close()
     }
 
 }

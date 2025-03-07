@@ -16,6 +16,15 @@ Window {
         anchors.fill: parent
 
         onGeneratePassRequested: camerapopup.open()
+
+        onNewPassRequested: newpassscreen.open()
+        onOpenSavedRequested: camerapopup.open()
+    }
+
+    NewPassScreen {
+        id: newpassscreen
+        width: parent.width
+        height: parent.height
     }
 
     CameraPopup {
@@ -25,6 +34,7 @@ Window {
 
         onOpened: clockTimer.start()
 
+        // remove this once QR scanning is implemented
         Timer {
             id: clockTimer
             interval: 2000

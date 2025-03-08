@@ -1,0 +1,146 @@
+import QtMultimedia
+import QtQuick
+import QtQuick.Controls
+
+Rectangle {
+    id: newPassScreen
+    color: "#d9d9d9"
+    
+    signal goToScan
+    
+    Text {
+        id: title
+        y: 50
+        width: parent.width * 0.6
+        height: width / 4
+        color: "#000000"
+
+        text: qsTr("New Pass")
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignLeft
+
+        anchors.horizontalCenterOffset: -80
+        anchors.horizontalCenter: parent.horizontalCenter
+
+        font.weight: Font.Bold
+        font.pointSize: 18
+        font.family: "Geist"
+    }
+
+    Text {
+        id: copyright
+        y: parent.height - 35
+        width: parent.width * 0.3
+        height: width / 4
+        color: "#898989"
+
+        text: qsTr("© 2025 EECS 497 Group 11")
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+
+        anchors.horizontalCenterOffset: 0
+        anchors.horizontalCenter: parent.horizontalCenter
+
+        font.weight: Font.Normal
+        font.pointSize: 6
+        font.family: "Geist"
+    }
+    
+    Rectangle {
+        id: selectionBox
+        color: "#cccccc"
+        radius: 7
+        border.color: "#000000"
+        border.width: 1
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.leftMargin: 40
+        anchors.rightMargin: 40
+        anchors.topMargin: 275
+        anchors.bottomMargin: 175
+        
+        Column {
+            id: selectionGroup
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.leftMargin: 10
+            anchors.rightMargin: 10
+            anchors.topMargin: 10
+            anchors.bottomMargin: 10
+            spacing: 7
+            
+            RadioButton {
+                id: eventTicket
+                text: qsTr("Event Ticket")
+                font.pixelSize: 14
+                font.family: "Geist"
+                checked: true
+                
+            }
+            
+            RadioButton {
+                id: boardingPass
+                text: qsTr("Boarding Pass")
+                font.pixelSize: 14
+                font.family: "Geist"
+            }
+            
+            RadioButton {
+                id: storeCard
+                text: qsTr("Store Card")
+                font.pixelSize: 14
+                font.family: "Gesit"
+            }
+            
+            RadioButton {
+                id: coupon
+                text: qsTr("Coupon")
+                font.pixelSize: 14
+                font.family: "Geist"
+            }
+            
+            RadioButton {
+                id: other
+                text: qsTr("Other")
+                font.pixelSize: 14
+                font.family: "Geist"
+            }
+        }
+    }
+    
+    RoundButton {
+        id: newPass
+        text: qsTr("Next")
+        width: parent.width * 0.6
+        height: width / 3
+        checkable: false
+        radius: 15
+
+        y: copyright.y - 90
+        anchors.horizontalCenter: parent.horizontalCenter
+        
+
+        background: Rectangle {
+            color: "black"
+            radius: parent.radius
+        }
+
+        contentItem: Text {
+            font.family: "Geist"
+            font.pointSize: 18
+            text: newPass.text
+            color: "white"
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+        }
+
+        Connections {
+            target: newPass
+            onClicked: newPassScreen.goToScan()
+        }
+    }
+}

@@ -2,27 +2,98 @@ import QtMultimedia
 import QtQuick
 import QtQuick.Controls
 
-Popup {
+Rectangle {
     id: newPassScreen
+    color: "#d9d9d9"
 
-    //color: "#e4e4e4"
+    signal goToScan
+
     Text {
         id: title
-        y: 50
+        y: 41
         width: parent.width * 0.6
-        height: width / 4
+        height: width / 6
         color: "#000000"
 
         text: qsTr("New Pass")
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignLeft
+        horizontalAlignment: Text.AlignLeft
+        verticalAlignment: Text.AlignHCenter
 
-        anchors.horizontalCenterOffset: -50
+        anchors.horizontalCenterOffset: -32
         anchors.horizontalCenter: parent.horizontalCenter
 
-        font.weight: Font.Black
-        font.pointSize: 16
-        font.family: "Verdana"
+        font.weight: Font.Bold
+        font.pointSize: 18
+        font.family: "Geist"
+    }
+
+    Text {
+        x: 72
+        y: 248
+        width: 62
+        height: 19
+        color: "#000000"
+        text: qsTr("Barcode")
+        font.pixelSize: 12
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        wrapMode: Text.NoWrap
+        font.weight: Font.Medium
+        font.family: "Geist"
+    }
+
+    Text {
+        x: 228
+        y: 246
+        width: 50
+        height: 24
+        color: "#000000"
+        text: qsTr("QR Code")
+        font.pixelSize: 12
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        wrapMode: Text.NoWrap
+        font.weight: Font.Medium
+        font.family: "Geist"
+    }
+
+    // Better way to have a selection like the figma sketch?
+    Row {
+        id: scanSelection
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.leftMargin: 40
+        anchors.rightMargin: 40
+        anchors.topMargin: 87
+        anchors.bottomMargin: 398
+
+        Rectangle {
+            id: barcode
+            color: "#cccccc"
+            radius: 5
+            border.color: "#898989"
+            border.width: 1
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.rightMargin: 150
+        }
+
+        Rectangle {
+            id: qrcode
+            color: "#cccccc"
+            radius: 5
+            border.color: "#898989"
+            border.width: 1
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.leftMargin: 150
+        }
     }
 
     Text {
@@ -30,18 +101,203 @@ Popup {
         y: parent.height - 35
         width: parent.width * 0.3
         height: width / 4
-        color: "#c5c5c5"
+        color: "#898989"
 
         text: qsTr("© 2025 EECS 497 Group 11")
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        styleColor: "#a2a2a2"
 
         anchors.horizontalCenterOffset: 0
         anchors.horizontalCenter: parent.horizontalCenter
 
-        font.weight: Font.Black
+        font.weight: Font.Normal
         font.pointSize: 6
-        font.family: "verdana"
+        font.family: "Geist"
+    }
+
+    Rectangle {
+        id: selectionBox
+        color: "#cccccc"
+        radius: 7
+        border.color: "#000000"
+        border.width: 1
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.leftMargin: 40
+        anchors.rightMargin: 40
+        anchors.topMargin: 298
+        anchors.bottomMargin: 152
+
+        Column {
+            id: selectionGroup
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.leftMargin: 10
+            anchors.rightMargin: 10
+            anchors.topMargin: 10
+            anchors.bottomMargin: 10
+            spacing: 7
+
+            RadioButton {
+                id: eventTicket
+                text: qsTr("Event Ticket")
+                font.pixelSize: 14
+                font.family: "Geist"
+                checked: true
+                width: parent.width
+
+                indicator: Rectangle {
+                    implicitWidth: 14
+                    implicitHeight: 14
+                    radius: 15
+                    anchors.verticalCenter: parent.verticalCenter
+                    border.color: "black"
+
+                    Rectangle {
+                        width: 12
+                        height: 12
+                        anchors.centerIn: parent
+                        radius: 15
+                        visible: eventTicket.checked
+                        color: "black"
+                    }
+                }
+            }
+
+            RadioButton {
+                id: boardingPass
+                text: qsTr("Boarding Pass")
+                font.pixelSize: 14
+                font.family: "Geist"
+                width: parent.width
+
+                indicator: Rectangle {
+                    implicitWidth: 14
+                    implicitHeight: 14
+                    radius: 15
+                    anchors.verticalCenter: parent.verticalCenter
+                    border.color: "black"
+
+                    Rectangle {
+                        width: 12
+                        height: 12
+                        anchors.centerIn: parent
+                        radius: 15
+                        visible: boardingPass.checked
+                        color: "black"
+                    }
+                }
+            }
+
+            RadioButton {
+                id: storeCard
+                text: qsTr("Store Card")
+                font.pixelSize: 14
+                font.family: "Gesit"
+                width: parent.width
+
+                indicator: Rectangle {
+                    implicitWidth: 14
+                    implicitHeight: 14
+                    radius: 15
+                    anchors.verticalCenter: parent.verticalCenter
+                    border.color: "black"
+
+                    Rectangle {
+                        width: 12
+                        height: 12
+                        anchors.centerIn: parent
+                        radius: 15
+                        visible: storeCard.checked
+                        color: "black"
+                    }
+                }
+            }
+
+            RadioButton {
+                id: coupon
+                text: qsTr("Coupon")
+                font.pixelSize: 14
+                font.family: "Geist"
+                width: parent.width
+
+                indicator: Rectangle {
+                    implicitWidth: 14
+                    implicitHeight: 14
+                    radius: 15
+                    anchors.verticalCenter: parent.verticalCenter
+                    border.color: "black"
+
+                    Rectangle {
+                        width: 12
+                        height: 12
+                        anchors.centerIn: parent
+                        radius: 15
+                        visible: coupon.checked
+                        color: "black"
+                    }
+                }
+            }
+
+            RadioButton {
+                id: other
+                text: qsTr("Other")
+                font.pixelSize: 14
+                font.family: "Geist"
+                width: parent.width
+
+                indicator: Rectangle {
+                    implicitWidth: 14
+                    implicitHeight: 14
+                    radius: 15
+                    anchors.verticalCenter: parent.verticalCenter
+                    border.color: "black"
+
+                    Rectangle {
+                        width: 12
+                        height: 12
+                        anchors.centerIn: parent
+                        radius: 15
+                        visible: other.checked
+                        color: "black"
+                    }
+                }
+            }
+        }
+    }
+
+    RoundButton {
+        id: newPass
+        text: qsTr("Next")
+        width: parent.width * 0.6
+        height: width / 3
+        checkable: false
+        radius: 15
+
+        y: copyright.y - 90
+        anchors.horizontalCenter: parent.horizontalCenter
+
+        background: Rectangle {
+            color: "black"
+            radius: parent.radius
+        }
+
+        contentItem: Text {
+            font.family: "Geist"
+            font.pointSize: 18
+            text: newPass.text
+            color: "white"
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+        }
+
+        Connections {
+            target: newPass
+            onClicked: newPassScreen.goToScan()
+        }
     }
 }

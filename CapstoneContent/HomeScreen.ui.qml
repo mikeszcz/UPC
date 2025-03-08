@@ -4,41 +4,11 @@ import QtQuick.Controls
 
 Rectangle {
     id: homescreen
-    color: "#e4e4e4"
-
-    //Inital signal for testing
-    signal generatePassRequested
+    color: "#d9d9d9"
 
     signal openSavedRequested
     signal newPassRequested
 
-    //Initial button for testing
-
-
-    /*
-    Button {
-        id: openCamera
-        text: qsTr("Generate Pass")
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.verticalCenterOffset: -100
-        anchors.horizontalCenterOffset: 0
-        checkable: false
-        anchors.horizontalCenter: parent.horizontalCenter
-
-        width: parent.width * 0.3
-        height: width / 2.5
-        font.pixelSize: Math.min(width, height) * 0.25
-        font.weight: Font.White
-        font.pointSize: 16
-        font.family: "Verdana"
-
-        Connections {
-            target: openCamera
-
-            onClicked: homescreen.generatePassRequested()
-        }
-    }
-    */
     RoundButton {
         id: newPass
         text: qsTr("New Pass")
@@ -57,8 +27,8 @@ Rectangle {
         }
 
         contentItem: Text {
-            font.family: "Verdana"
-            font.pointSize: 16
+            font.family: "Geist"
+            font.pointSize: 18
             text: newPass.text
             color: "white"
             horizontalAlignment: Text.AlignHCenter
@@ -89,8 +59,8 @@ Rectangle {
         }
 
         contentItem: Text {
-            font.family: "Verdana"
-            font.pointSize: 14
+            font.family: "Geist"
+            font.pointSize: 16
             text: savedPasses.text
             color: "white"
             horizontalAlignment: Text.AlignHCenter
@@ -114,12 +84,12 @@ Rectangle {
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignLeft
 
-        anchors.horizontalCenterOffset: -50
+        anchors.horizontalCenterOffset: -60
         anchors.horizontalCenter: parent.horizontalCenter
 
         font.weight: Font.Black
-        font.pointSize: 16
-        font.family: "Verdana"
+        font.pointSize: 18
+        font.family: "Geist"
     }
 
     Text {
@@ -127,18 +97,33 @@ Rectangle {
         y: parent.height - 35
         width: parent.width * 0.3
         height: width / 4
-        color: "#c5c5c5"
+        color: "#898989"
 
         text: qsTr("© 2025 EECS 497 Group 11")
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        styleColor: "#a2a2a2"
 
         anchors.horizontalCenterOffset: 0
         anchors.horizontalCenter: parent.horizontalCenter
 
-        font.weight: Font.Black
+        font.weight: Font.Normal
         font.pointSize: 6
-        font.family: "verdana"
+        font.family: "Geist"
+    }
+
+    Text {
+        id: about_Legal
+        color: "#1e1e1e"
+        y: copyright.y - 15
+        text: qsTr("About   |   Legal")
+        font.pixelSize: 9
+        horizontalAlignment: Text.AlignLeft
+        verticalAlignment: Text.AlignTop
+        wrapMode: Text.NoWrap
+        font.weight: Font.DemiBold
+        font.family: "Inter"
+
+        anchors.horizontalCenterOffset: 0
+        anchors.horizontalCenter: parent.horizontalCenter
     }
 }

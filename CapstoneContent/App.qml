@@ -15,8 +15,6 @@ Window {
         id: homescreen
         anchors.fill: parent
 
-        onGeneratePassRequested: camerapopup.open()
-
         onNewPassRequested: newpassscreen.open()
         onOpenSavedRequested: camerapopup.open()
     }

@@ -170,4 +170,28 @@ Rectangle {
             radius: parent.radius
         }
     }
+
+    Button {
+        id: backButton
+        text: qsTr("< Back")
+        width: 70
+        height: width / 3
+        checkable: false
+
+        y: passName.y - 25
+        x: passName.x
+
+        background: Rectangle {
+            color: "#d9d9d9"
+        }
+
+        contentItem: Text {
+            font.family: "Geist"
+            font.pointSize: 12
+            text: backButton.text
+            color: "black"
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+        }
+    }
 }

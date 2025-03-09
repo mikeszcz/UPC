@@ -151,7 +151,7 @@ Rectangle {
     }
 
     RoundButton {
-        id: newPass
+        id: exportPass
         text: qsTr("Next")
         width: parent.width * 0.6
         height: width / 3
@@ -161,12 +161,37 @@ Rectangle {
         y: copyright.y - 70
         anchors.horizontalCenter: parent.horizontalCenter
 
+        //Need to fix this, or just simply change to button with text
         contentItem: Image {
             source: "capstone/assets/element1.png"
             height: 200
             width: 250
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
+        }
+    }
+
+    Button {
+        id: backButton
+        text: qsTr("< Back")
+        width: 70
+        height: width / 3
+        checkable: false
+
+        y: title.y - 25
+        x: title.x
+
+        background: Rectangle {
+            color: "#d9d9d9"
+        }
+
+        contentItem: Text {
+            font.family: "Geist"
+            font.pointSize: 12
+            text: backButton.text
+            color: "black"
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
         }
     }
 }

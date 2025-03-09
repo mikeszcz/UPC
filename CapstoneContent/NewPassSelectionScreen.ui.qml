@@ -300,4 +300,28 @@ Rectangle {
             onClicked: newPassScreen.goToScan()
         }
     }
+
+    Button {
+        id: backButton
+        text: qsTr("< Back")
+        width: 70
+        height: width / 3
+        checkable: false
+
+        y: title.y - 25
+        x: title.x
+
+        background: Rectangle {
+            color: "#d9d9d9"
+        }
+
+        contentItem: Text {
+            font.family: "Geist"
+            font.pointSize: 12
+            text: backButton.text
+            color: "black"
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+        }
+    }
 }

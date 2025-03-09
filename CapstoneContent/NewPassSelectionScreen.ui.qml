@@ -158,8 +158,8 @@ Rectangle {
                     border.color: "black"
 
                     Rectangle {
-                        width: 12
-                        height: 12
+                        width: 14
+                        height: 14
                         anchors.centerIn: parent
                         radius: 15
                         visible: eventTicket.checked
@@ -183,8 +183,8 @@ Rectangle {
                     border.color: "black"
 
                     Rectangle {
-                        width: 12
-                        height: 12
+                        width: 14
+                        height: 14
                         anchors.centerIn: parent
                         radius: 15
                         visible: boardingPass.checked
@@ -208,8 +208,8 @@ Rectangle {
                     border.color: "black"
 
                     Rectangle {
-                        width: 12
-                        height: 12
+                        width: 14
+                        height: 14
                         anchors.centerIn: parent
                         radius: 15
                         visible: storeCard.checked
@@ -233,8 +233,8 @@ Rectangle {
                     border.color: "black"
 
                     Rectangle {
-                        width: 12
-                        height: 12
+                        width: 14
+                        height: 14
                         anchors.centerIn: parent
                         radius: 15
                         visible: coupon.checked
@@ -258,8 +258,8 @@ Rectangle {
                     border.color: "black"
 
                     Rectangle {
-                        width: 12
-                        height: 12
+                        width: 14
+                        height: 14
                         anchors.centerIn: parent
                         radius: 15
                         visible: other.checked
@@ -278,7 +278,7 @@ Rectangle {
         checkable: false
         radius: 15
 
-        y: copyright.y - 90
+        y: copyright.y - 70
         anchors.horizontalCenter: parent.horizontalCenter
 
         background: Rectangle {

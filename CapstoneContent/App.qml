@@ -19,7 +19,7 @@ Window {
         onOpenSavedRequested: camerapopup.open()
     }
 
-    NewPassScreen {
+    NewPassSelectionScreen {
         id: newpassscreen
         width: parent.width
         height: parent.height
@@ -45,14 +45,5 @@ Window {
             }
         }
     }
-
-    PassInformation {
-        id: passinfo
-        width: parent.width
-        height: parent.height
-
-        onExportRequested: passinfo.close()
-    }
-
 }
 

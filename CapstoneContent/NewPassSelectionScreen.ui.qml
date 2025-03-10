@@ -59,6 +59,7 @@ Rectangle {
     }
 
     // Better way to have a selection like the figma sketch?
+    //Add the small indicator rectangles for qr and barcode like in figma sketch
     Row {
         id: scanSelection
         anchors.left: parent.left

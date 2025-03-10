@@ -7,8 +7,13 @@ Rectangle {
     color: "#d9d9d9"
 
     signal saveAndPreviewRequest
+    signal back
+    signal uploadScannable
 
-    //Enforce a name length?
+    //Elipses when pass name goes pass a certain length
+    //Use anchors to anchor image to end of input text
+    //dont want to set a width, since it should have a dynamic size
+    //Set visible property to active focus
     TextInput {
         id: passName
         y: 41
@@ -38,8 +43,7 @@ Rectangle {
         }
     }
 
-    //Entire rectangle must be a cliclable object
-    //Probably just reimplement as a button
+    //Should popup with options of how to upload a scannable, for the lofi we can just assume camera use
     Rectangle {
         id: uploadZone
         color: "#d9d9d9"
@@ -73,6 +77,18 @@ Rectangle {
             font.weight: Font.Normal
             font.family: "Geist"
             y: uploadButton.y + uploadButton.height + 5
+        }
+
+        MouseArea {
+            id: uploadClickable
+            anchors.fill: parent
+
+            Connections {
+                target: uploadClickable
+                function onClicked(mouse) {
+                    createPass.uploadScannable()
+                }
+            }
         }
     }
 
@@ -122,7 +138,7 @@ Rectangle {
 
         Connections {
             target: saveAndPreview
-            onClicked: createPass.saveAndPreviewRequest()
+            function onClicked() {createPass.saveAndPreviewRequest()}
         }
     }
 
@@ -152,6 +168,10 @@ Rectangle {
     //When clicked, creates a new input field
     //Need to enforice a field limit
     //Limit is listed somewhere in the google sheet
+    //Use combo box for selecting field when we add new field, item should disappear from the combo box
+    //Probably use listview with a listmodel
+    //Dynamically add and remove things from the model when button is clicked
+    //Set clip property to true
     Button {
         id: addNewField
         text: qsTr("+ Add Field")
@@ -192,6 +212,13 @@ Rectangle {
             color: "black"
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
+        }
+    }
+
+    Connections {
+        target: backButton
+        function onClicked() {
+            createPass.back()
         }
     }
 }

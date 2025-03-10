@@ -7,6 +7,7 @@ Rectangle {
     color: "#d9d9d9"
 
     signal goToScan
+    signal backToHome
 
     Text {
         id: title
@@ -69,31 +70,46 @@ Rectangle {
         anchors.topMargin: 87
         anchors.bottomMargin: 398
 
-        Rectangle {
+        Button {
             id: barcode
-            color: "#cccccc"
-            radius: 5
-            border.color: "#898989"
-            border.width: 1
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             anchors.rightMargin: 150
+
+            background: Rectangle {
+                anchors.fill: parent
+                color: "#cccccc"
+                radius: 5
+                border.color: "#898989"
+                border.width: barcode.checked ? 2 : 1
+            }
+            checkable: true
+            checked: true
         }
 
-        Rectangle {
+        Button {
             id: qrcode
-            color: "#cccccc"
-            radius: 5
-            border.color: "#898989"
-            border.width: 1
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             anchors.leftMargin: 150
+
+            background: Rectangle {
+                anchors.fill: parent
+                color: "#cccccc"
+                radius: 5
+                border.color: "#898989"
+                border.width: qrcode.checked ? 2 : 1
+            }
+            checkable: true
         }
+    }
+
+    ButtonGroup {
+        buttons: scanSelection.children
     }
 
     Text {
@@ -297,7 +313,9 @@ Rectangle {
 
         Connections {
             target: newPass
-            onClicked: newPassScreen.goToScan()
+            function onClicked() {
+                newPassScreen.goToScan()
+            }
         }
     }
 
@@ -322,6 +340,13 @@ Rectangle {
             color: "black"
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
+        }
+
+        Connections {
+            target: backButton
+            function onClicked() {
+                newPassScreen.backToHome()
+            }
         }
     }
 }

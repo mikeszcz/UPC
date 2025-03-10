@@ -3,8 +3,11 @@ import QtQuick
 import QtQuick.Controls
 
 Rectangle {
-    id: homescreen
+    id: previewScreen
     color: "#d9d9d9"
+
+    signal back
+    signal exportPass
 
     Text {
         id: title
@@ -169,6 +172,13 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
         }
+
+        Connections {
+            target: exportPass
+            function onClicked() {
+                previewScreen.exportPass()
+            }
+        }
     }
 
     Button {
@@ -192,6 +202,13 @@ Rectangle {
             color: "black"
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
+        }
+
+        Connections {
+            target: backButton
+            function onClicked() {
+                previewScreen.back()
+            }
         }
     }
 }

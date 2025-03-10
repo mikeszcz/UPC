@@ -3,6 +3,7 @@
 
 import QtQuick
 import Capstone
+import QtQuick.Controls 6.7
 
 Window {
     width: Constants.width
@@ -11,65 +12,110 @@ Window {
     visible: true
     title: "Capstone"
 
-    HomeScreen {
-        id: homescreen
+    StackView {
+        id: stackView
         anchors.fill: parent
 
-        onNewPassRequested: newpassscreen.open()
-        onOpenSavedRequested: camerapopup.open()
+        initialItem: homescreenComponent
     }
 
-    NewPassScanScreen {
-        id: newpassscanscreen
-        anchors.fill: parent
+    Component {
+        id: homescreenComponent
+        HomeScreen {
+            id: homescreen
+            anchors.fill: parent
+
+            onNewPassRequested: stackView.push(newpassselectionscreenComponent)
+            onOpenSavedRequested: stackView.push(savedpassesscreenComponent)
+        }
     }
 
-    NewPassSelectionScreen {
-        id: newpassselectionscreen
-        anchors.fill: parent
+
+    Component {
+        id: newpassselectionscreenComponent
+        NewPassSelectionScreen {
+            id: newpassselectionscreen
+            anchors.fill: parent
+
+            onBackToHome: stackView.pop()
+            onGoToScan: stackView.push(newpassscreenComponent)
+        }
     }
 
-    PassSavedScreen {
-        id: passsavedscreen
-        anchors.fill: parent
+    Component {
+        id: newpassscreenComponent
+        NewPassScanScreen {
+            id: newpassscanscreen
+            anchors.fill: parent
+
+            onUploadScannable: camerapopup.open()
+            onSaveAndPreviewRequest: stackView.push(previewscreenComponent)
+            onBack: stackView.pop()
+        }
     }
 
-    PreviewScreen {
-        id: previewscreen
-        anchors.fill: parent
+    Component {
+        id: previewscreenComponent
+        PreviewScreen {
+            id: previewscreen
+            anchors.fill: parent
+
+            onBack: stackView.pop()
+            onExportPass: stackView.push(passsavedscreenComponent)
+        }
     }
 
-    SavedPassesScreen {
-        id: savedpassesscreen
-        anchors.fill: parent
+    Component {
+        id: savedpassesscreenComponent
+        SavedPassesScreen {
+            id: savedpassesscreen
+            anchors.fill: parent
+
+            onBack: stackView.pop()
+
+        }
     }
 
-    // CameraPopup {
-    //     id: camerapopup
-    //     width: parent.width
-    //     height: parent.height
+    Component {
+        id: passsavedscreenComponent
+        PassSavedScreen {
+            id: passsavedscreen
+            anchors.fill: parent
 
-    //     onOpened: clockTimer.start()
+            Timer {
+                id: clockTimer
+                interval: 2000
+                repeat: false
+                running: true
 
-    //     // remove this once QR scanning is implemented
-    //     Timer {
-    //         id: clockTimer
-    //         interval: 2000
-    //         repeat: false
-    //         running: false
+                onTriggered: {
+                    stackView.popToIndex(0)
+                }
+            }
+        }
+    }
 
-    //         onTriggered: {
-    //             camerapopup.close()
-    //             passinfo.open()
-    //         }
-    //     }
-    // }
+    CameraPopup {
+        id: camerapopup
+        width: parent.width
+        height: parent.height
+
+        onOpened: clockTimer.start()
+
+        // remove this once QR scanning is implemented
+        Timer {
+            id: clockTimer
+            interval: 2000
+            repeat: false
+            running: false
+
+            onTriggered: {
+                camerapopup.close()
+                passinfo.open()
+            }
+        }
+    }
 }
 
 
-/*##^##
-Designer {
-    D{i:0}D{i:2;invisible:true}D{i:3;invisible:true}D{i:4;invisible:true}D{i:5;invisible:true}
-D{i:6;invisible:true}
-}
-##^##*/
+

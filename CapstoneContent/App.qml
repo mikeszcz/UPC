@@ -12,6 +12,21 @@ Window {
     visible: true
     title: "Capstone"
 
+    //ADDED THE FUNCTION ADDNEWDESCRIPTION AND LISTMODEL FOR THE DESCRIPTION STUFF IN
+    // NewPassScanScreen.ui.qml but don't think it works
+    //DELETE THIS IF REVERTING ADD FIELD STUFF
+    // ListModel to store description fields
+    ListModel {
+        id: descriptionModel
+    }
+    //DELETE THIS IF REVERTING ADD FIELD STUFF
+    // Function to add a new description field
+    function addNewDescriptionField() {
+        if (descriptionModel.count < 3) {
+            descriptionModel.append({}); // Add a new empty field
+        }
+    }
+
     StackView {
         id: stackView
         anchors.fill: parent
@@ -30,7 +45,6 @@ Window {
         }
     }
 
-
     Component {
         id: newpassselectionscreenComponent
         NewPassSelectionScreen {
@@ -47,6 +61,13 @@ Window {
         NewPassScanScreen {
             id: newpassscanscreen
             anchors.fill: parent
+
+            //DELETE THIS IF REVERTING ADD FIELD STUFF
+            // added this for the NewPassScanScreen.ui.qml but don't think it works
+            // Pass the ListModel and function to the screen
+            descriptionModel: descriptionModel
+            //DELETE THIS IF REVERTING ADD FIELD STUFF
+            onAddNewFieldRequested: addNewDescriptionField()
 
             onUploadScannable: camerapopup.open()
             onSaveAndPreviewRequest: stackView.push(previewscreenComponent)
@@ -72,7 +93,6 @@ Window {
             anchors.fill: parent
 
             onBack: stackView.pop()
-
         }
     }
 
@@ -102,7 +122,7 @@ Window {
 
         onOpened: clockTimer.start()
 
-        // remove this once QR scanning is implemented
+        // Remove this once QR scanning is implemented
         Timer {
             id: clockTimer
             interval: 2000
@@ -116,6 +136,3 @@ Window {
         }
     }
 }
-
-
-

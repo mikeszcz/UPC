@@ -6,41 +6,61 @@ Rectangle {
     id: createPass
     color: "#d9d9d9"
 
+    //DELETE THIS IF REVERTING ADD FIELD STUFF
+    // Signal to request adding a new field
+    signal addNewFieldRequested
+
+    //DELETE THIS IF REVERTING ADD FIELD STUFF
+    // Property to receive the ListModel from App.qml
+    property ListModel descriptionModel
+
     signal saveAndPreviewRequest
     signal back
     signal uploadScannable
 
-    //Elipses when pass name goes pass a certain length
-    //Use anchors to anchor image to end of input text
-    //dont want to set a width, since it should have a dynamic size
-    //Set visible property to active focus
+    //Elipses when pass name goes pass a certain length (USE MAX CHAR LENGHT INSTEAD OF ELLIPSES)
+    //Use anchors to anchor image to end of input text (FIXED)
+    //dont want to set a width, since it should have a dynamic size (FIXED)
+    //Set visible property to active focus (FIXED)
     TextInput {
         id: passName
-        y: 41
-        width: parent.width * 0.6
-        height: width / 6
+        y: 45
+        height: 40
         color: "#000000"
-
         text: qsTr("New Pass")
         horizontalAlignment: Text.AlignLeft
-        verticalAlignment: Text.AlignHCenter
-
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.horizontalCenterOffset: -43
-
+        verticalAlignment: Text.AlignVCenter
         font.weight: Font.Bold
-        font.pointSize: 18
+        font.pointSize: 20
         font.family: "Geist"
+        clip: true
+        focus: true
+        maximumLength: 25
 
-        //This image needs to always be at the end of the text
-        Image {
-            anchors.fill: parent
-            anchors.leftMargin: 60
-            anchors.topMargin: 10
-            anchors.bottomMargin: 10
-            source: "capstone/assets/_black_and_white_pencil_clip_art_png_download_2120721743_1.png"
-            fillMode: Image.PreserveAspectFit
-        }
+        anchors.left: parent.left
+        anchors.leftMargin: 25
+        anchors.rightMargin: 10
+    }
+
+    Image {
+        id: passIcon
+        width: 24
+        height: 24
+        anchors.left: passName.right
+        anchors.verticalCenter: passName.verticalCenter
+        source: "capstone/assets/_black_and_white_pencil_clip_art_png_download_2120721743_1.png"
+        fillMode: Image.PreserveAspectFit
+    }
+
+    Text {
+        id: charLimitText
+        y: 79
+        anchors.left: passName.left
+        anchors.leftMargin: 0
+        text: `Characters Left: ${25 - passName.length}`
+        color: "#666666"
+        font.pointSize: 12
+        font.family: "Geist"
     }
 
     //Should popup with options of how to upload a scannable, for the lofi we can just assume camera use
@@ -138,30 +158,9 @@ Rectangle {
 
         Connections {
             target: saveAndPreview
-            function onClicked() {createPass.saveAndPreviewRequest()}
-        }
-    }
-
-    Rectangle {
-        id: descriptionField
-        color: "white"
-        x: uploadZone.x
-        y: uploadZone.y + uploadZone.height + 20
-        width: 290
-        height: 20
-        radius: 5
-
-        //Need to fix positioning
-        TextInput {
-            color: "#cccccc"
-            id: textInput
-            text: qsTr("Description (Required)")
-            font.pixelSize: 12
-            wrapMode: Text.NoWrap
-            font.weight: Font.Normal
-            font.family: "Geist"
-            width: parent.width
-            height: parent.height
+            function onClicked() {
+                createPass.saveAndPreviewRequest()
+            }
         }
     }
 
@@ -172,12 +171,45 @@ Rectangle {
     //Probably use listview with a listmodel
     //Dynamically add and remove things from the model when button is clicked
     //Set clip property to true
+
+    //DELETE THIS IF REVERTING ADD FIELD STUFF
+    // ListView to display description fields
+    ListView {
+        id: descriptionListView
+        anchors.top: uploadZone.bottom
+        anchors.topMargin: 20
+        anchors.left: uploadZone.left
+        width: 290
+        height: childrenRect.height
+        spacing: 10
+        model: descriptionModel
+        delegate: Rectangle {
+            width: 290
+            height: 20
+            radius: 5
+            color: "white"
+
+            TextInput {
+                color: "#cccccc"
+                text: qsTr("Description (Required)")
+                font.pixelSize: 12
+                wrapMode: Text.NoWrap
+                font.weight: Font.Normal
+                font.family: "Geist"
+                anchors.fill: parent
+                anchors.leftMargin: 4
+            }
+        }
+    }
+
+    //DELETE THIS IF REVERTING ADD FIELD STUFF
     Button {
         id: addNewField
         text: qsTr("+ Add Field")
         x: uploadZone.x
-        y: descriptionField.y + descriptionField.height + 10
-        height: descriptionField.height
+        y: descriptionListView.y + descriptionListView.height + 10
+        height: 20
+        enabled: descriptionModel.count < 3
         contentItem: Text {
             font.family: "Geist"
             font.pointSize: 12
@@ -189,8 +221,16 @@ Rectangle {
             color: "#d9d9d9"
             radius: parent.radius
         }
+
+        Connections {
+            target: addNewField
+            function onClicked() {
+                createPass.addNewFieldRequested()
+            }
+        }
     }
 
+    //END OF CHANGE (PROLLY NOT GOOD CHANGE SO REVERT TO OLD VERSION FOR THIS FUNCTION)
     Button {
         id: backButton
         text: qsTr("< Back")
@@ -213,12 +253,12 @@ Rectangle {
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
         }
-    }
 
-    Connections {
-        target: backButton
-        function onClicked() {
-            createPass.back()
+        Connections {
+            target: backButton
+            function onClicked() {
+                createPass.back()
+            }
         }
     }
 }

@@ -13,140 +13,110 @@ Rectangle {
     color: "#d9d9d9"
 
     signal back
+    signal openPreview
 
-    Text {
-        id: title
-        y: 41
-        width: parent.width * 0.6
-        height: width / 6
-        color: "#000000"
+    GridView {
+        id: gridView
+        anchors.fill: parent
+        cellWidth: 170
+        cellHeight: 180
+        model: 11
 
-        text: qsTr("Saved Passes")
-        horizontalAlignment: Text.AlignLeft
-        verticalAlignment: Text.AlignHCenter
+        header: Item {
+            height: 100
+            width: parent.width
+            Column {
+                id: headerColumn
+                x: 25
+                y: 15
+                Text {
+                    y: backButton.y + 30
+                    width: parent.width * 0.6
+                    height: width / 6
+                    color: "#000000"
 
-        anchors.horizontalCenterOffset: -32
-        anchors.horizontalCenter: parent.horizontalCenter
+                    text: qsTr("Saved Passes")
+                    horizontalAlignment: Text.AlignLeft
+                    verticalAlignment: Text.AlignHCenter
 
-        font.weight: Font.Bold
-        font.pointSize: 18
-        font.family: "Geist"
-    }
+                    font.weight: Font.Bold
+                    font.pointSize: 18
+                    font.family: "Geist"
+                }
 
-    //Need to have a constant width height for passes
-    //Should be about 135 x 148
-    Rectangle {
-        x: 40
-        y: 90
-        width: 135
-        height: 148
-        color: "#d9d9d9"
-        border.color: "#000000"
-        border.width: 1
-        radius: 5
-    }
+                Button {
+                    id: backButton
+                    y: 15
+                    text: qsTr("< Back")
+                    width: 70
+                    height: width / 3
+                    checkable: false
 
-    Rectangle {
-        x: 190
-        y: 90
-        width: 135
-        height: 148
-        color: "#d9d9d9"
-        border.color: "#000000"
-        border.width: 1
-        radius: 5
-    }
+                    background: Rectangle {
+                        color: "#d9d9d9"
+                    }
 
-    Rectangle {
-        x: 190
-        y: 250
-        width: 135
-        height: 148
-        color: "#d9d9d9"
-        border.color: "#000000"
-        border.width: 1
-        radius: 5
-    }
+                    contentItem: Text {
+                        font.family: "Geist"
+                        font.pointSize: 12
+                        text: backButton.text
+                        color: "black"
+                        horizontalAlignment: Text.AlignLeft
+                        verticalAlignment: Text.AlignVCenter
+                    }
 
-    Rectangle {
-        x: 190
-        y: 410
-        width: 135
-        height: 148
-        color: "#d9d9d9"
-        border.color: "#000000"
-        border.width: 1
-        radius: 5
-    }
-
-    Rectangle {
-        x: 40
-        y: 250
-        width: 135
-        height: 148
-        color: "#d9d9d9"
-        border.color: "#000000"
-        border.width: 1
-        radius: 5
-    }
-
-    Rectangle {
-        x: 40
-        y: 410
-        width: 135
-        height: 148
-        color: "#d9d9d9"
-        border.color: "#000000"
-        border.width: 1
-        radius: 5
-    }
-
-    Text {
-        id: copyright
-        y: parent.height - 35
-        width: parent.width * 0.3
-        height: width / 4
-        color: "#898989"
-
-        text: qsTr("© 2025 EECS 497 Group 11")
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-
-        anchors.horizontalCenterOffset: 0
-        anchors.horizontalCenter: parent.horizontalCenter
-
-        font.weight: Font.Normal
-        font.pointSize: 6
-        font.family: "Geist"
-    }
-
-    Button {
-        id: backButton
-        text: qsTr("< Back")
-        width: 70
-        height: width / 3
-        checkable: false
-
-        y: title.y - 25
-        x: title.x
-
-        background: Rectangle {
-            color: "#d9d9d9"
+                    Connections {
+                        target: backButton
+                        function onClicked() {
+                            savedPassScreen.back()
+                        }
+                    }
+                }
+            }
         }
 
-        contentItem: Text {
-            font.family: "Geist"
-            font.pointSize: 12
-            text: backButton.text
-            color: "black"
-            horizontalAlignment: Text.AlignLeft
-            verticalAlignment: Text.AlignVCenter
+        footer: Item {
+            width: parent.width
+            height: (parent.width * 0.3) / 4
+            Text {
+                id: copyright
+                width: parent.width
+                height: parent.height
+                color: "#898989"
+
+                text: qsTr("© 2025 EECS 497 Group 11")
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                font.weight: Font.Normal
+                font.pointSize: 6
+                font.family: "Geist"
+            }
         }
 
-        Connections {
-            target: backButton
-            function onClicked() {
-                savedPassScreen.back()
+        // Ideally when clicking the delegate button, this will bring you to the preview for the pass
+        // onClicked does not mesh well with the grid view
+        delegate: Item {
+            Column {
+                x: 25
+                Button {
+                    id: delegateButton
+                    width: 140
+                    height: 158
+                    background: Rectangle {
+                        anchors.fill: parent
+                        color: savedPassScreen.color
+                        radius: 5
+                        border.color: "black"
+                        border.width: 1
+                    }
+
+                    Connections {
+                        target: delegateButton
+                        function onClicked() {
+                            savedPassScreen.openPreview()
+                        }
+                    }
+                }
             }
         }
     }

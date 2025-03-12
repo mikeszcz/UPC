@@ -155,7 +155,7 @@ Rectangle {
 
     RoundButton {
         id: exportPass
-        text: qsTr("Next")
+        text: qsTr("Export")
         width: parent.width * 0.6
         height: width / 3
         checkable: false
@@ -164,13 +164,20 @@ Rectangle {
         y: copyright.y - 70
         anchors.horizontalCenter: parent.horizontalCenter
 
-        //Need to fix this, or just simply change to button with text
-        contentItem: Image {
-            source: "capstone/assets/element1.png"
-            height: 200
-            width: 250
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.horizontalCenter: parent.horizontalCenter
+        contentItem: Rectangle {
+            color: "black"
+            radius: parent.radius
+            anchors.fill: parent
+
+            Text {
+                font.family: "Geist"
+                font.pointSize: 18
+                text: exportPass.text
+                color: "white"
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                anchors.centerIn: parent
+            }
         }
 
         Connections {

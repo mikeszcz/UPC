@@ -6,14 +6,6 @@ Rectangle {
     id: createPass
     color: "#d9d9d9"
 
-    //DELETE THIS IF REVERTING ADD FIELD STUFF
-    // Signal to request adding a new field
-    signal addNewFieldRequested
-
-    //DELETE THIS IF REVERTING ADD FIELD STUFF
-    // Property to receive the ListModel from App.qml
-    property ListModel descriptionModel
-
     signal saveAndPreviewRequest
     signal back
     signal uploadScannable
@@ -24,7 +16,7 @@ Rectangle {
     //Set visible property to active focus (FIXED)
     TextInput {
         id: passName
-        y: 45
+        y: 40
         height: 40
         color: "#000000"
         text: qsTr("New Pass")
@@ -35,18 +27,19 @@ Rectangle {
         font.family: "Geist"
         clip: true
         focus: true
-        maximumLength: 25
+        maximumLength: 17
 
         anchors.left: parent.left
-        anchors.leftMargin: 25
+        anchors.leftMargin: 28
         anchors.rightMargin: 10
     }
 
     Image {
         id: passIcon
-        width: 24
-        height: 24
+        width: 20
+        height: 20
         anchors.left: passName.right
+        anchors.leftMargin: 10
         anchors.verticalCenter: passName.verticalCenter
         source: "capstone/assets/_black_and_white_pencil_clip_art_png_download_2120721743_1.png"
         fillMode: Image.PreserveAspectFit
@@ -57,7 +50,7 @@ Rectangle {
         y: 79
         anchors.left: passName.left
         anchors.leftMargin: 0
-        text: `Characters Left: ${25 - passName.length}`
+        text: `Characters Left: ${passName.maximumLength - passName.length}`
         color: "#666666"
         font.pointSize: 12
         font.family: "Geist"
@@ -177,27 +170,40 @@ Rectangle {
     ListView {
         id: descriptionListView
         anchors.top: uploadZone.bottom
-        anchors.topMargin: 20
+        anchors.leftMargin: 0
+        anchors.topMargin: 10
         anchors.left: uploadZone.left
-        width: 290
-        height: childrenRect.height
+        width: uploadZone.width
+        height: 20
         spacing: 10
-        model: descriptionModel
-        delegate: Rectangle {
-            width: 290
-            height: 20
-            radius: 5
-            color: "white"
 
-            TextInput {
-                color: "#cccccc"
-                text: qsTr("Description (Required)")
-                font.pixelSize: 12
-                wrapMode: Text.NoWrap
-                font.weight: Font.Normal
-                font.family: "Geist"
+        model: ListModel {
+            id: listModel
+            ListElement {
+                text: "Description (required)"
+            }
+        }
+
+        delegate: Item {
+            width: ListView.view.width
+            height: 20
+
+            Rectangle {
+                color: "white"
                 anchors.fill: parent
-                anchors.leftMargin: 4
+                radius: 5
+
+                TextInput {
+                    color: "#000000"
+                    text: model.text
+                    font.pixelSize: 12
+                    wrapMode: Text.NoWrap
+                    font.weight: Font.Normal
+                    font.family: "Geist"
+                    anchors.fill: parent
+                    anchors.leftMargin: 4
+                    anchors.topMargin: 2
+                }
             }
         }
     }
@@ -209,7 +215,8 @@ Rectangle {
         x: uploadZone.x
         y: descriptionListView.y + descriptionListView.height + 10
         height: 20
-        enabled: descriptionModel.count < 3
+        enabled: listModel.count <= 3
+        visible: listModel.count <= 3
         contentItem: Text {
             font.family: "Geist"
             font.pointSize: 12
@@ -221,11 +228,13 @@ Rectangle {
             color: "#d9d9d9"
             radius: parent.radius
         }
-
         Connections {
             target: addNewField
             function onClicked() {
-                createPass.addNewFieldRequested()
+                listModel.append({
+                                     "text": "Additional Field"
+                                 })
+                descriptionListView.height = descriptionListView.height + 30
             }
         }
     }
@@ -252,6 +261,8 @@ Rectangle {
             color: "black"
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
+            anchors.verticalCenter: parent
+            anchors.left: parent.left
         }
 
         Connections {

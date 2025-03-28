@@ -16,28 +16,28 @@ Rectangle {
     //Set visible property to active focus (FIXED)
     TextInput {
         id: passName
-        y: 40
-        height: 40
+        y: 50
+        height: (parent.width * 0.6) / 4
         color: "#000000"
         text: qsTr("New Pass")
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
         font.weight: Font.Bold
-        font.pointSize: 20
+        font.pointSize: height / 2
         font.family: "Geist"
         clip: true
         focus: true
-        maximumLength: 17
+        maximumLength: parent.width / 17
 
         anchors.left: parent.left
-        anchors.leftMargin: 28
+        anchors.leftMargin: 25
         anchors.rightMargin: 10
     }
 
     Image {
         id: passIcon
-        width: 20
-        height: 20
+        width: height
+        height: passName.font.pixelSize
         anchors.left: passName.right
         anchors.leftMargin: 10
         anchors.verticalCenter: passName.verticalCenter
@@ -47,12 +47,14 @@ Rectangle {
 
     Text {
         id: charLimitText
-        y: 79
         anchors.left: passName.left
-        anchors.leftMargin: 0
+        anchors.top: passName.bottom
+        anchors.topMargin: -10
+        width: parent.width * 0.4
+        height: width / 4
         text: `Characters Left: ${passName.maximumLength - passName.length}`
         color: "#666666"
-        font.pointSize: 12
+        font.pointSize: height / 3
         font.family: "Geist"
     }
 
@@ -60,13 +62,15 @@ Rectangle {
     Rectangle {
         id: uploadZone
         color: "#d9d9d9"
-        anchors.fill: parent
         border.width: 5
         border.color: "black"
-        anchors.topMargin: 100
-        anchors.bottomMargin: 275
+        anchors.top: charLimitText.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        height: parent.width - 50
         anchors.leftMargin: 25
         anchors.rightMargin: 25
+        anchors.topMargin: -10
 
         Image {
             id: uploadButton
@@ -116,11 +120,10 @@ Rectangle {
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
 
-        anchors.horizontalCenterOffset: 0
         anchors.horizontalCenter: parent.horizontalCenter
 
         font.weight: Font.Normal
-        font.pointSize: 6
+        font.pointSize: height / 3
         font.family: "Geist"
     }
 
@@ -132,8 +135,10 @@ Rectangle {
         checkable: false
         radius: 15
 
-        y: copyright.y - 70
         anchors.horizontalCenter: parent.horizontalCenter
+
+        anchors.bottom: copyright.top
+        anchors.bottomMargin: 15
 
         background: Rectangle {
             color: "black"
@@ -170,7 +175,6 @@ Rectangle {
     ListView {
         id: descriptionListView
         anchors.top: uploadZone.bottom
-        anchors.leftMargin: 0
         anchors.topMargin: 10
         anchors.left: uploadZone.left
         width: uploadZone.width
@@ -215,8 +219,8 @@ Rectangle {
         x: uploadZone.x
         y: descriptionListView.y + descriptionListView.height + 10
         height: 20
-        enabled: listModel.count <= 3
-        visible: listModel.count <= 3
+        enabled: listModel.count <= 4
+        visible: listModel.count <= 4
         contentItem: Text {
             font.family: "Geist"
             font.pointSize: 12
@@ -243,12 +247,14 @@ Rectangle {
     Button {
         id: backButton
         text: qsTr("< Back")
-        width: 70
-        height: width / 3
+        width: parent.width * 0.4
+        height: width / 5
         checkable: false
 
-        y: passName.y - 25
-        x: passName.x
+        anchors.bottom: passName.top
+        anchors.bottomMargin: -10
+        anchors.left: parent.left
+        anchors.leftMargin: 25
 
         background: Rectangle {
             color: "#d9d9d9"
@@ -256,13 +262,12 @@ Rectangle {
 
         contentItem: Text {
             font.family: "Geist"
-            font.pointSize: 12
+            font.pointSize: backButton.height / 1.5
             text: backButton.text
             color: "black"
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
-            // anchors.verticalCenter: parent
-            // anchors.left: parent.left
+            anchors.fill: parent
         }
 
         Connections {

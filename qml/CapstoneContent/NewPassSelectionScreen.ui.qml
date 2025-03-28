@@ -12,48 +12,55 @@ Rectangle {
 
     Text {
         id: title
-        y: 41
+        y: 50
         width: parent.width * 0.6
-        height: width / 6
+        height: width / 4
         color: "#000000"
 
         text: qsTr("New Pass")
         horizontalAlignment: Text.AlignLeft
-        verticalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
 
-        anchors.horizontalCenterOffset: -32
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.left: parent.left
+        anchors.leftMargin: 25
 
         font.weight: Font.Bold
-        font.pointSize: 18
+        font.pointSize: height / 2
         font.family: "Geist"
     }
 
     Text {
-        x: 72
-        y: 248
-        width: 62
-        height: 19
+        id: barcodeText
+        width: barcode.width
+        height: width / 4.3
         color: "#000000"
         text: qsTr("Barcode")
-        font.pixelSize: 12
+        font.pixelSize: height / 2
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
+
+        anchors.top: scanSelection.bottom
+        anchors.left: parent.left
+        anchors.leftMargin: 25
+
         wrapMode: Text.NoWrap
         font.weight: Font.Medium
         font.family: "Geist"
     }
 
     Text {
-        x: 228
-        y: 246
-        width: 50
-        height: 24
+        width: qrcode.width
+        height: width / 4.3
         color: "#000000"
         text: qsTr("QR Code")
-        font.pixelSize: 12
+        font.pixelSize: height / 2
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
+
+        anchors.top: scanSelection.bottom
+        anchors.right: parent.right
+        anchors.rightMargin: 25
+
         wrapMode: Text.NoWrap
         font.weight: Font.Medium
         font.family: "Geist"
@@ -65,20 +72,14 @@ Rectangle {
         id: scanSelection
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        anchors.leftMargin: 40
-        anchors.rightMargin: 40
-        anchors.topMargin: 87
-        anchors.bottomMargin: 398
+        anchors.top: title.bottom
+        anchors.leftMargin: 25
+        anchors.rightMargin: 25
+        height: parent.height * 0.23
+        spacing: 10
 
         Button {
             id: barcode
-            // anchors.left: parent.left
-            // anchors.right: parent.right
-            // anchors.top: parent.top
-            // anchors.bottom: parent.bottom
-            // anchors.rightMargin: 150
             Layout.fillWidth: true
             Layout.fillHeight: true
 
@@ -95,11 +96,6 @@ Rectangle {
 
         Button {
             id: qrcode
-            // anchors.left: parent.left
-            // anchors.right: parent.right
-            // anchors.top: parent.top
-            // anchors.bottom: parent.bottom
-            // anchors.leftMargin: 150
 
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -130,11 +126,10 @@ Rectangle {
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
 
-        anchors.horizontalCenterOffset: 0
         anchors.horizontalCenter: parent.horizontalCenter
 
         font.weight: Font.Normal
-        font.pointSize: 6
+        font.pointSize: height / 3
         font.family: "Geist"
     }
 
@@ -146,12 +141,12 @@ Rectangle {
         border.width: 1
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        anchors.leftMargin: 40
-        anchors.rightMargin: 40
-        anchors.topMargin: 298
-        anchors.bottomMargin: 152
+        anchors.top: barcodeText.bottom
+        anchors.bottom: newPass.top
+        anchors.leftMargin: 25
+        anchors.rightMargin: 25
+        anchors.topMargin: 15
+        anchors.bottomMargin: 15
 
         Column {
             id: selectionGroup
@@ -163,26 +158,26 @@ Rectangle {
             anchors.rightMargin: 10
             anchors.topMargin: 10
             anchors.bottomMargin: 10
-            spacing: 7
+            spacing: eventTicket.font.pixelSize / 2
 
             RadioButton {
                 id: eventTicket
                 text: qsTr("Event Ticket")
-                font.pixelSize: 14
+                font.pixelSize: selectionBox.height / 17
                 font.family: "Geist"
                 checked: true
                 width: parent.width
 
                 indicator: Rectangle {
-                    implicitWidth: 14
-                    implicitHeight: 14
+                    implicitWidth: eventTicket.font.pixelSize
+                    implicitHeight: eventTicket.font.pixelSize
                     radius: 15
                     anchors.verticalCenter: parent.verticalCenter
                     border.color: "black"
 
                     Rectangle {
-                        width: 14
-                        height: 14
+                        width: eventTicket.font.pixelSize
+                        height: eventTicket.font.pixelSize
                         anchors.centerIn: parent
                         radius: 15
                         visible: eventTicket.checked
@@ -194,20 +189,20 @@ Rectangle {
             RadioButton {
                 id: boardingPass
                 text: qsTr("Boarding Pass")
-                font.pixelSize: 14
+                font.pixelSize: eventTicket.font.pixelSize
                 font.family: "Geist"
                 width: parent.width
 
                 indicator: Rectangle {
-                    implicitWidth: 14
-                    implicitHeight: 14
+                    implicitWidth: eventTicket.font.pixelSize
+                    implicitHeight: eventTicket.font.pixelSize
                     radius: 15
                     anchors.verticalCenter: parent.verticalCenter
                     border.color: "black"
 
                     Rectangle {
-                        width: 14
-                        height: 14
+                        width: eventTicket.font.pixelSize
+                        height: eventTicket.font.pixelSize
                         anchors.centerIn: parent
                         radius: 15
                         visible: boardingPass.checked
@@ -219,20 +214,20 @@ Rectangle {
             RadioButton {
                 id: storeCard
                 text: qsTr("Store Card")
-                font.pixelSize: 14
+                font.pixelSize: eventTicket.font.pixelSize
                 font.family: "Gesit"
                 width: parent.width
 
                 indicator: Rectangle {
-                    implicitWidth: 14
-                    implicitHeight: 14
+                    implicitWidth: eventTicket.font.pixelSize
+                    implicitHeight: eventTicket.font.pixelSize
                     radius: 15
                     anchors.verticalCenter: parent.verticalCenter
                     border.color: "black"
 
                     Rectangle {
-                        width: 14
-                        height: 14
+                        width: eventTicket.font.pixelSize
+                        height: eventTicket.font.pixelSize
                         anchors.centerIn: parent
                         radius: 15
                         visible: storeCard.checked
@@ -244,20 +239,20 @@ Rectangle {
             RadioButton {
                 id: coupon
                 text: qsTr("Coupon")
-                font.pixelSize: 14
+                font.pixelSize: eventTicket.font.pixelSize
                 font.family: "Geist"
                 width: parent.width
 
                 indicator: Rectangle {
-                    implicitWidth: 14
-                    implicitHeight: 14
+                    implicitWidth: eventTicket.font.pixelSize
+                    implicitHeight: eventTicket.font.pixelSize
                     radius: 15
                     anchors.verticalCenter: parent.verticalCenter
                     border.color: "black"
 
                     Rectangle {
-                        width: 14
-                        height: 14
+                        width: eventTicket.font.pixelSize
+                        height: eventTicket.font.pixelSize
                         anchors.centerIn: parent
                         radius: 15
                         visible: coupon.checked
@@ -269,20 +264,20 @@ Rectangle {
             RadioButton {
                 id: other
                 text: qsTr("Other")
-                font.pixelSize: 14
+                font.pixelSize: eventTicket.font.pixelSize
                 font.family: "Geist"
                 width: parent.width
 
                 indicator: Rectangle {
-                    implicitWidth: 14
-                    implicitHeight: 14
+                    implicitWidth: eventTicket.font.pixelSize
+                    implicitHeight: eventTicket.font.pixelSize
                     radius: 15
                     anchors.verticalCenter: parent.verticalCenter
                     border.color: "black"
 
                     Rectangle {
-                        width: 14
-                        height: 14
+                        width: eventTicket.font.pixelSize
+                        height: eventTicket.font.pixelSize
                         anchors.centerIn: parent
                         radius: 15
                         visible: other.checked
@@ -301,8 +296,10 @@ Rectangle {
         checkable: false
         radius: 15
 
-        y: copyright.y - 70
         anchors.horizontalCenter: parent.horizontalCenter
+
+        anchors.bottom: copyright.top
+        anchors.bottomMargin: 15
 
         background: Rectangle {
             color: "black"
@@ -329,12 +326,14 @@ Rectangle {
     Button {
         id: backButton
         text: qsTr("< Back")
-        width: 70
-        height: width / 3
+        width: parent.width * 0.4
+        height: width / 5
         checkable: false
 
-        y: title.y - 25
-        x: title.x
+        anchors.bottom: title.top
+        anchors.bottomMargin: -10
+        anchors.left: parent.left
+        anchors.leftMargin: 25
 
         background: Rectangle {
             color: "#d9d9d9"
@@ -342,11 +341,12 @@ Rectangle {
 
         contentItem: Text {
             font.family: "Geist"
-            font.pointSize: 12
+            font.pointSize: backButton.height / 1.5
             text: backButton.text
             color: "black"
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
+            anchors.fill: parent
         }
 
         Connections {

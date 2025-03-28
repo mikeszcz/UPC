@@ -72,7 +72,7 @@ Window {
         id: previewscreenComponent
         PreviewScreen {
             id: previewscreen
-            anchors.fill: parent
+            // anchors.fill: parent
 
             onBack: stackView.pop()
             onExportPass: stackView.push(passsavedscreenComponent)
@@ -83,7 +83,7 @@ Window {
         id: savedpassesscreenComponent
         SavedPassesScreen {
             id: savedpassesscreen
-            anchors.fill: parent
+            // anchors.fill: parent
 
             onBack: stackView.pop()
             onOpenPreview: stackView.push()(previewscreenComponent)
@@ -94,7 +94,7 @@ Window {
         id: passsavedscreenComponent
         PassSavedScreen {
             id: passsavedscreen
-            anchors.fill: parent
+            // anchors.fill: parent
 
             Timer {
                 id: clockTimer

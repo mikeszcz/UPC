@@ -18,13 +18,13 @@ Rectangle {
 
         text: qsTr("Preview")
         horizontalAlignment: Text.AlignLeft
-        verticalAlignment: Text.AlignLeft
+        verticalAlignment: Text.AlignVCenter
 
-        anchors.horizontalCenterOffset: -43
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.left: parent.left
+        anchors.leftMargin: 25
 
-        font.weight: Font.Black
-        font.pointSize: 18
+        font.weight: Font.Bold
+        font.pointSize: height / 2
         font.family: "Geist"
     }
 
@@ -39,11 +39,10 @@ Rectangle {
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
 
-        anchors.horizontalCenterOffset: 0
         anchors.horizontalCenter: parent.horizontalCenter
 
         font.weight: Font.Normal
-        font.pointSize: 6
+        font.pointSize: height / 3
         font.family: "Geist"
     }
 
@@ -51,11 +50,13 @@ Rectangle {
     Rectangle {
         id: previewZone
         color: "#d9d9d9"
-        anchors.fill: parent
         border.width: 2
         border.color: "black"
-        anchors.topMargin: 95
-        anchors.bottomMargin: 240
+        anchors.top: title.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.topMargin: 10
+        height: parent.width - 50
         anchors.leftMargin: 25
         anchors.rightMargin: 25
         radius: 5
@@ -64,91 +65,83 @@ Rectangle {
         Rectangle {
             id: code
             color: "#898989"
-            anchors.top: parent.top
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.right: parent.right
-            anchors.topMargin: 180
             anchors.bottomMargin: 20
-            anchors.leftMargin: 100
-            anchors.rightMargin: 100
+            anchors.leftMargin: 120
+            anchors.rightMargin: 120
+            height: parent.height - 240
         }
 
         Rectangle {
             id: field1
             color: "#898989"
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
+            anchors.bottom: code.top
             anchors.left: parent.left
             anchors.right: parent.right
-            anchors.topMargin: 140
-            anchors.bottomMargin: 140
+            anchors.bottomMargin: 20
             anchors.leftMargin: 20
             anchors.rightMargin: 20
+            height: parent.height * 0.08
         }
 
         Rectangle {
             id: logo
             color: "#898989"
             anchors.top: parent.top
-            anchors.bottom: parent.bottom
             anchors.left: parent.left
-            anchors.right: parent.right
             anchors.topMargin: 20
-            anchors.bottomMargin: 265
             anchors.leftMargin: 20
-            anchors.rightMargin: 265
+            width: height * 1.3
+            height: parent.height * 0.08
         }
 
         Rectangle {
             id: passDate
             color: "#898989"
             anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.left: parent.left
             anchors.right: parent.right
             anchors.topMargin: 20
-            anchors.bottomMargin: 265
-            anchors.leftMargin: 235
             anchors.rightMargin: 20
+            width: height * 1.5
+            height: parent.height * 0.08
         }
 
         Rectangle {
             id: name
             color: "#898989"
             anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.left: parent.left
-            anchors.right: parent.right
+            anchors.left: logo.right
+            anchors.right: passDate.left
             anchors.topMargin: 20
-            anchors.bottomMargin: 265
-            anchors.leftMargin: 55
-            anchors.rightMargin: 85
+            anchors.leftMargin: 10
+            anchors.rightMargin: 10
+            height: parent.height * 0.08
         }
 
         Rectangle {
             id: additionalFields
             color: "#898989"
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
+            anchors.top: passDate.bottom
+            anchors.bottom: field1.top
             anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.topMargin: 50
-            anchors.bottomMargin: 175
+            anchors.topMargin: 20
+            anchors.bottomMargin: 20
             anchors.leftMargin: 20
-            anchors.rightMargin: 115
+            width: parent.height * 0.55
         }
 
         Rectangle {
             id: additionalLogo
             color: "#898989"
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.left: parent.left
+            anchors.top: passDate.bottom
+            anchors.bottom: field1.top
+            anchors.left: additionalFields.right
             anchors.right: parent.right
-            anchors.topMargin: 50
-            anchors.bottomMargin: 175
-            anchors.leftMargin: 205
+            anchors.topMargin: 20
+            anchors.bottomMargin: 20
+            anchors.leftMargin: 20
             anchors.rightMargin: 20
         }
     }
@@ -161,8 +154,10 @@ Rectangle {
         checkable: false
         radius: 15
 
-        y: copyright.y - 70
         anchors.horizontalCenter: parent.horizontalCenter
+
+        anchors.bottom: copyright.top
+        anchors.bottomMargin: 15
 
         contentItem: Rectangle {
             color: "black"
@@ -191,12 +186,14 @@ Rectangle {
     Button {
         id: backButton
         text: qsTr("< Back")
-        width: 70
-        height: width / 3
+        width: parent.width * 0.4
+        height: width / 5
         checkable: false
 
-        y: title.y - 25
-        x: title.x
+        anchors.bottom: title.top
+        anchors.bottomMargin: -10
+        anchors.left: parent.left
+        anchors.leftMargin: 25
 
         background: Rectangle {
             color: "#d9d9d9"
@@ -204,11 +201,12 @@ Rectangle {
 
         contentItem: Text {
             font.family: "Geist"
-            font.pointSize: 12
+            font.pointSize: backButton.height / 1.5
             text: backButton.text
             color: "black"
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
+            anchors.fill: parent
         }
 
         Connections {

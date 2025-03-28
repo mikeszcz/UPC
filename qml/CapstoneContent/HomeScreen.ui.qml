@@ -75,20 +75,17 @@ Rectangle {
 
     Text {
         id: title
-        y: 50
+        y: 75
         width: parent.width * 0.6
         height: width / 4
         color: "#000000"
 
         text: qsTr("Pass Generator")
         horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignLeft
-
-        anchors.horizontalCenterOffset: -60
         anchors.horizontalCenter: parent.horizontalCenter
 
         font.weight: Font.Black
-        font.pointSize: 18
+        font.pointSize: height / 1.5
         font.family: "Geist"
     }
 
@@ -103,27 +100,27 @@ Rectangle {
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
 
-        anchors.horizontalCenterOffset: 0
         anchors.horizontalCenter: parent.horizontalCenter
 
         font.weight: Font.Normal
-        font.pointSize: 6
+        font.pointSize: height / 3
         font.family: "Geist"
     }
 
     Text {
         id: about_Legal
         color: "#1e1e1e"
-        y: copyright.y - 15
+        y: copyright.y - height
+        width: parent.width * 0.4
+        height: width / 4
         text: qsTr("About   |   Legal")
-        font.pixelSize: 9
-        horizontalAlignment: Text.AlignLeft
-        verticalAlignment: Text.AlignTop
+        font.pixelSize: height / 3
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
         wrapMode: Text.NoWrap
         font.weight: Font.DemiBold
         font.family: "Inter"
 
-        anchors.horizontalCenterOffset: 0
         anchors.horizontalCenter: parent.horizontalCenter
     }
 }

@@ -8,6 +8,7 @@ Rectangle {
 
     signal openSavedRequested
     signal newPassRequested
+    signal testScreenRequested
 
     RoundButton {
         id: newPass

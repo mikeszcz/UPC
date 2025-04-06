@@ -12,21 +12,6 @@ Window {
     visible: true
     title: "Capstone"
 
-    // //ADDED THE FUNCTION ADDNEWDESCRIPTION AND LISTMODEL FOR THE DESCRIPTION STUFF IN
-    // // NewPassScanScreen.ui.qml but don't think it works
-    // //DELETE THIS IF REVERTING ADD FIELD STUFF
-    // // ListModel to store description fields
-    // ListModel {
-    //     id: descriptionModel
-    // }
-    // //DELETE THIS IF REVERTING ADD FIELD STUFF
-    // // Function to add a new description field
-    // function addNewDescriptionField() {
-    //     if (descriptionModel.count < 3) {
-    //         descriptionModel.append({}); // Add a new empty field
-    //     }
-    // }
-
     StackView {
         id: stackView
         anchors.fill: parent
@@ -38,10 +23,10 @@ Window {
         id: homescreenComponent
         HomeScreen {
             id: homescreen
-            // anchors.fill: parent
 
             onNewPassRequested: stackView.push(newpassselectionscreenComponent)
             onOpenSavedRequested: stackView.push(savedpassesscreenComponent)
+            onTestScreenRequested: stackView.push(testScreenComponent)
         }
     }
 
@@ -49,7 +34,6 @@ Window {
         id: newpassselectionscreenComponent
         NewPassSelectionScreen {
             id: newpassselectionscreen
-            // anchors.fill: parent
 
             onBackToHome: stackView.pop()
             onGoToScan: stackView.push(newpassscreenComponent)
@@ -60,7 +44,6 @@ Window {
         id: newpassscreenComponent
         NewPassScanScreen {
             id: newpassscanscreen
-            // anchors.fill: parent
 
             onUploadScannable: camerapopup.open()
             onSaveAndPreviewRequest: stackView.push(previewscreenComponent)
@@ -72,7 +55,6 @@ Window {
         id: previewscreenComponent
         PreviewScreen {
             id: previewscreen
-            // anchors.fill: parent
 
             onBack: stackView.pop()
             onExportPass: stackView.push(passsavedscreenComponent)
@@ -83,10 +65,9 @@ Window {
         id: savedpassesscreenComponent
         SavedPassesScreen {
             id: savedpassesscreen
-            // anchors.fill: parent
 
             onBack: stackView.pop()
-            onOpenPreview: stackView.push()(previewscreenComponent)
+            onOpenPreview: stackView.push(previewscreenComponent)
         }
     }
 
@@ -94,7 +75,6 @@ Window {
         id: passsavedscreenComponent
         PassSavedScreen {
             id: passsavedscreen
-            // anchors.fill: parent
 
             Timer {
                 id: clockTimer

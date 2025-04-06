@@ -2,21 +2,59 @@ import QtMultimedia
 import QtQuick
 import QtQuick.Controls
 
-Rectangle {
+Flickable {
     id: createPass
-    color: "#d9d9d9"
+    contentHeight: Math.max(descriptionListView.y + descriptionListView.height + saveAndPreview.height + copyright.height + 60, parent.height)
+    boundsMovement: Flickable.StopAtBounds
+
+    ScrollBar.vertical: ScrollBar{}
 
     signal saveAndPreviewRequest
     signal back
     signal uploadScannable
 
+    Rectangle {
+        anchors.fill: parent
+        color: "#d9d9d9"
+    }
+
+    Button {
+        id: backButton
+        text: qsTr("< Back")
+        width: parent.width * 0.4
+        height: width / 8
+        checkable: false
+
+        y: 15
+        anchors.left: parent.left
+        anchors.leftMargin: 25
+
+        background: Rectangle {
+            color: "#d9d9d9"
+        }
+
+        contentItem: Text {
+            font.family: "Geist"
+            font.pointSize: backButton.height
+            text: backButton.text
+            color: "black"
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+            anchors.fill: parent
+        }
+
+        Connections {
+            target: backButton
+            function onClicked() {
+                createPass.back()
+            }
+        }
+    }
+
     //Elipses when pass name goes pass a certain length (USE MAX CHAR LENGHT INSTEAD OF ELLIPSES)
-    //Use anchors to anchor image to end of input text (FIXED)
-    //dont want to set a width, since it should have a dynamic size (FIXED)
-    //Set visible property to active focus (FIXED)
     TextInput {
         id: passName
-        y: 50
+        anchors.top: backButton.bottom
         height: (parent.width * 0.6) / 4
         color: "#000000"
         text: qsTr("New Pass")
@@ -58,7 +96,6 @@ Rectangle {
         font.family: "Geist"
     }
 
-    //Should popup with options of how to upload a scannable, for the lofi we can just assume camera use
     Rectangle {
         id: uploadZone
         color: "#d9d9d9"
@@ -70,14 +107,13 @@ Rectangle {
         height: parent.width - 50
         anchors.leftMargin: 25
         anchors.rightMargin: 25
-        anchors.topMargin: -10
 
         Image {
             id: uploadButton
             anchors.fill: parent
             anchors.leftMargin: 100
-            anchors.topMargin: 100
-            anchors.bottomMargin: 100
+            anchors.topMargin: 90
+            anchors.bottomMargin: 110
             anchors.rightMargin: 100
             source: "capstone/assets/very_Basic_Upload_icon_1277321410_1.png"
             fillMode: Image.PreserveAspectFit
@@ -87,7 +123,7 @@ Rectangle {
             color: "#000000"
             text: qsTr("Upload Scan Code")
             anchors.horizontalCenter: parent.horizontalCenter
-            font.pixelSize: 10
+            font.pixelSize: uploadButton.width / 8
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignTop
             wrapMode: Text.NoWrap
@@ -109,22 +145,75 @@ Rectangle {
         }
     }
 
-    Text {
-        id: copyright
-        y: parent.height - 35
-        width: parent.width * 0.3
-        height: width / 4
-        color: "#898989"
+    ListView {
+        id: descriptionListView
+        interactive: false
+        anchors.top: uploadZone.bottom
+        anchors.topMargin: 10
+        anchors.left: uploadZone.left
+        width: uploadZone.width
+        height: 20
+        spacing: 10
 
-        text: qsTr("© 2025 EECS 497 Group 11")
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
+        model: ListModel {
+            id: listModel
+            ListElement {
+                text: "Description (required)"
+            }
+        }
 
-        anchors.horizontalCenter: parent.horizontalCenter
+        delegate: Item {
+            width: ListView.view.width
+            height: 25
 
-        font.weight: Font.Normal
-        font.pointSize: height / 3
-        font.family: "Geist"
+            Rectangle {
+                color: "white"
+                anchors.fill: parent
+                radius: 5
+
+                TextInput {
+                    color: "#000000"
+                    text: model.text
+                    font.pixelSize: 14
+                    wrapMode: Text.NoWrap
+                    font.weight: Font.Normal
+                    font.family: "Geist"
+                    anchors.fill: parent
+                    anchors.leftMargin: 4
+                    anchors.topMargin: 2
+                }
+            }
+        }
+    }
+
+    Button {
+        id: addNewField
+        text: qsTr("+ Add Field")
+        x: uploadZone.x
+        y: descriptionListView.y + descriptionListView.height + 10
+        height: 25
+        enabled: listModel.count <= 4
+        visible: listModel.count <= 4
+        contentItem: Text {
+            font.family: "Geist"
+            font.pointSize: 14
+            text: addNewField.text
+            color: "white"
+            anchors.fill: parent
+        }
+        background: Rectangle {
+            color: "#d9d9d9"
+            radius: 5
+        }
+        Connections {
+            target: addNewField
+            function onClicked() {
+                listModel.append({
+                                     "text": "Additional Field"
+                                 })
+                descriptionListView.height = descriptionListView.height + 35
+            }
+        }
     }
 
     RoundButton {
@@ -136,9 +225,8 @@ Rectangle {
         radius: 15
 
         anchors.horizontalCenter: parent.horizontalCenter
-
-        anchors.bottom: copyright.top
-        anchors.bottomMargin: 15
+        anchors.top: createPass.contentHeight !== parent.height ? addNewField.bottom : copyright.top
+        anchors.topMargin: createPass.contentHeight !== parent.height ? 40 : -(saveAndPreview.height)
 
         background: Rectangle {
             color: "black"
@@ -162,119 +250,23 @@ Rectangle {
         }
     }
 
-    //When clicked, creates a new input field
-    //Need to enforice a field limit
-    //Limit is listed somewhere in the google sheet
-    //Use combo box for selecting field when we add new field, item should disappear from the combo box
-    //Probably use listview with a listmodel
-    //Dynamically add and remove things from the model when button is clicked
-    //Set clip property to true
+    Text {
+        id: copyright
+        width: parent.width * 0.3
+        height: width / 4
+        color: "#898989"
 
-    //DELETE THIS IF REVERTING ADD FIELD STUFF
-    // ListView to display description fields
-    ListView {
-        id: descriptionListView
-        anchors.top: uploadZone.bottom
-        anchors.topMargin: 10
-        anchors.left: uploadZone.left
-        width: uploadZone.width
-        height: 20
-        spacing: 10
+        anchors.top: createPass.contentHeight !== parent.height ? saveAndPreview.bottom : parent.bottom
+        anchors.topMargin: createPass.contentHeight !== parent.height ? 20 : -copyright.height
 
-        model: ListModel {
-            id: listModel
-            ListElement {
-                text: "Description (required)"
-            }
-        }
+        text: qsTr("© 2025 EECS 497 Group 11")
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
 
-        delegate: Item {
-            width: ListView.view.width
-            height: 20
+        anchors.horizontalCenter: parent.horizontalCenter
 
-            Rectangle {
-                color: "white"
-                anchors.fill: parent
-                radius: 5
-
-                TextInput {
-                    color: "#000000"
-                    text: model.text
-                    font.pixelSize: 12
-                    wrapMode: Text.NoWrap
-                    font.weight: Font.Normal
-                    font.family: "Geist"
-                    anchors.fill: parent
-                    anchors.leftMargin: 4
-                    anchors.topMargin: 2
-                }
-            }
-        }
-    }
-
-    //DELETE THIS IF REVERTING ADD FIELD STUFF
-    Button {
-        id: addNewField
-        text: qsTr("+ Add Field")
-        x: uploadZone.x
-        y: descriptionListView.y + descriptionListView.height + 10
-        height: 20
-        enabled: listModel.count <= 4
-        visible: listModel.count <= 4
-        contentItem: Text {
-            font.family: "Geist"
-            font.pointSize: 12
-            text: addNewField.text
-            color: "white"
-            anchors.fill: parent
-        }
-        background: Rectangle {
-            color: "#d9d9d9"
-            radius: 5
-        }
-        Connections {
-            target: addNewField
-            function onClicked() {
-                listModel.append({
-                                     "text": "Additional Field"
-                                 })
-                descriptionListView.height = descriptionListView.height + 30
-            }
-        }
-    }
-
-    //END OF CHANGE (PROLLY NOT GOOD CHANGE SO REVERT TO OLD VERSION FOR THIS FUNCTION)
-    Button {
-        id: backButton
-        text: qsTr("< Back")
-        width: parent.width * 0.4
-        height: width / 5
-        checkable: false
-
-        anchors.bottom: passName.top
-        anchors.bottomMargin: -10
-        anchors.left: parent.left
-        anchors.leftMargin: 25
-
-        background: Rectangle {
-            color: "#d9d9d9"
-        }
-
-        contentItem: Text {
-            font.family: "Geist"
-            font.pointSize: backButton.height / 1.5
-            text: backButton.text
-            color: "black"
-            horizontalAlignment: Text.AlignLeft
-            verticalAlignment: Text.AlignVCenter
-            anchors.fill: parent
-        }
-
-        Connections {
-            target: backButton
-            function onClicked() {
-                createPass.back()
-            }
-        }
+        font.weight: Font.Normal
+        font.pointSize: height / 3
+        font.family: "Geist"
     }
 }

@@ -2,16 +2,57 @@ import QtMultimedia
 import QtQuick
 import QtQuick.Controls
 
-Rectangle {
+Flickable {
     id: previewScreen
-    color: "#d9d9d9"
+    contentHeight: Math.max(previewZone.y + previewZone.height + exportPass.height + copyright.height + 60, parent.height)
+    boundsMovement: Flickable.StopAtBounds
+
+    ScrollBar.vertical: ScrollBar{}
 
     signal back
     signal exportPass
 
+    Rectangle {
+        anchors.fill: parent
+        color: "#d9d9d9"
+    }
+
+    Button {
+        id: backButton
+        text: qsTr("< Back")
+        width: parent.width * 0.4
+        height: width / 8
+        checkable: false
+
+        y: 15
+        anchors.left: parent.left
+        anchors.leftMargin: 25
+
+        background: Rectangle {
+            color: "#d9d9d9"
+        }
+
+        contentItem: Text {
+            font.family: "Geist"
+            font.pointSize: backButton.height
+            text: backButton.text
+            color: "black"
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+            anchors.fill: parent
+        }
+
+        Connections {
+            target: backButton
+            function onClicked() {
+                previewScreen.back()
+            }
+        }
+    }
+
     Text {
         id: title
-        y: 50
+        anchors.top: backButton.bottom
         width: parent.width * 0.6
         height: width / 4
         color: "#000000"
@@ -25,24 +66,6 @@ Rectangle {
 
         font.weight: Font.Bold
         font.pointSize: height / 2
-        font.family: "Geist"
-    }
-
-    Text {
-        id: copyright
-        y: parent.height - 35
-        width: parent.width * 0.3
-        height: width / 4
-        color: "#898989"
-
-        text: qsTr("© 2025 EECS 497 Group 11")
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-
-        anchors.horizontalCenter: parent.horizontalCenter
-
-        font.weight: Font.Normal
-        font.pointSize: height / 3
         font.family: "Geist"
     }
 
@@ -155,9 +178,8 @@ Rectangle {
         radius: 15
 
         anchors.horizontalCenter: parent.horizontalCenter
-
-        anchors.bottom: copyright.top
-        anchors.bottomMargin: 15
+        anchors.top: previewScreen.contentHeight !== parent.height ? previewZone.bottom : copyright.top
+        anchors.topMargin: previewScreen.contentHeight !== parent.height ? 40 : -(exportPass.height)
 
         contentItem: Rectangle {
             color: "black"
@@ -183,37 +205,23 @@ Rectangle {
         }
     }
 
-    Button {
-        id: backButton
-        text: qsTr("< Back")
-        width: parent.width * 0.4
-        height: width / 5
-        checkable: false
+    Text {
+        id: copyright
+        width: parent.width * 0.3
+        height: width / 4
+        color: "#898989"
 
-        anchors.bottom: title.top
-        anchors.bottomMargin: -10
-        anchors.left: parent.left
-        anchors.leftMargin: 25
+        anchors.top: previewScreen.contentHeight !== parent.height ? exportPass.bottom : parent.bottom
+        anchors.topMargin: previewScreen.contentHeight !== parent.height ? 20 : -copyright.height
 
-        background: Rectangle {
-            color: "#d9d9d9"
-        }
+        text: qsTr("© 2025 EECS 497 Group 11")
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
 
-        contentItem: Text {
-            font.family: "Geist"
-            font.pointSize: backButton.height / 1.5
-            text: backButton.text
-            color: "black"
-            horizontalAlignment: Text.AlignLeft
-            verticalAlignment: Text.AlignVCenter
-            anchors.fill: parent
-        }
+        anchors.horizontalCenter: parent.horizontalCenter
 
-        Connections {
-            target: backButton
-            function onClicked() {
-                previewScreen.back()
-            }
-        }
+        font.weight: Font.Normal
+        font.pointSize: height / 3
+        font.family: "Geist"
     }
 }

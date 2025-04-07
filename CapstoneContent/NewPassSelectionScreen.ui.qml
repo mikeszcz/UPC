@@ -1,83 +1,89 @@
 import QtMultimedia
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
 
-Rectangle {
+Flickable {
     id: newPassScreen
-    color: "#d9d9d9"
+    contentHeight: Math.max(selectionBox.y + selectionBox.height + newPass.height + copyright.height + 60, parent.height)
+    boundsMovement: Flickable.StopAtBounds
+
+    ScrollBar.vertical: ScrollBar{}
 
     signal goToScan
     signal backToHome
 
+    Rectangle {
+        anchors.fill: parent
+        color: "#d9d9d9"
+    }
+
+    Button {
+        id: backButton
+        text: qsTr("< Back")
+        width: parent.width * 0.4
+        height: width / 8
+        checkable: false
+
+        y: 15
+        anchors.left: parent.left
+        anchors.leftMargin: 25
+
+        background: Rectangle {
+            color: "#d9d9d9"
+        }
+
+        contentItem: Text {
+            font.family: "Geist"
+            font.pointSize: backButton.height
+            text: backButton.text
+            color: "black"
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+            anchors.fill: parent
+        }
+
+        Connections {
+            target: backButton
+            function onClicked() {
+                newPassScreen.backToHome()
+            }
+        }
+    }
+
     Text {
         id: title
-        y: 41
+        anchors.top: backButton.bottom
         width: parent.width * 0.6
-        height: width / 6
+        height: width / 4
         color: "#000000"
 
         text: qsTr("New Pass")
         horizontalAlignment: Text.AlignLeft
-        verticalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
 
-        anchors.horizontalCenterOffset: -32
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.left: parent.left
+        anchors.leftMargin: 25
 
         font.weight: Font.Bold
-        font.pointSize: 18
+        font.pointSize: height / 2
         font.family: "Geist"
     }
 
-    Text {
-        x: 72
-        y: 248
-        width: 62
-        height: 19
-        color: "#000000"
-        text: qsTr("Barcode")
-        font.pixelSize: 12
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        wrapMode: Text.NoWrap
-        font.weight: Font.Medium
-        font.family: "Geist"
-    }
-
-    Text {
-        x: 228
-        y: 246
-        width: 50
-        height: 24
-        color: "#000000"
-        text: qsTr("QR Code")
-        font.pixelSize: 12
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        wrapMode: Text.NoWrap
-        font.weight: Font.Medium
-        font.family: "Geist"
-    }
-
-    // Better way to have a selection like the figma sketch?
-    //Add the small indicator rectangles for qr and barcode like in figma sketch
-    Row {
+    RowLayout {
         id: scanSelection
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        anchors.leftMargin: 40
-        anchors.rightMargin: 40
-        anchors.topMargin: 87
-        anchors.bottomMargin: 398
+        anchors.top: title.bottom
+        anchors.leftMargin: 25
+        anchors.rightMargin: 25
+        height: (parent.width - 50) / 1.9
+        spacing: 10
 
         Button {
             id: barcode
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.rightMargin: 150
+            Layout.fillWidth: true
+            Layout.fillHeight: true
 
             background: Rectangle {
                 anchors.fill: parent
@@ -85,18 +91,32 @@ Rectangle {
                 radius: 5
                 border.color: "#898989"
                 border.width: barcode.checked ? 2 : 1
+
+                //possible just have a barcode filler image here
+                Rectangle {
+                    width: 50
+                    height: 20
+                    color: "#6B6B6B"
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.leftMargin: 20
+                    anchors.rightMargin: 20
+                    anchors.topMargin: 120
+                    anchors.bottomMargin: 30
+                }
             }
+
             checkable: true
             checked: true
         }
 
         Button {
             id: qrcode
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.leftMargin: 150
+
+            Layout.fillWidth: true
+            Layout.fillHeight: true
 
             background: Rectangle {
                 anchors.fill: parent
@@ -104,6 +124,21 @@ Rectangle {
                 radius: 5
                 border.color: "#898989"
                 border.width: qrcode.checked ? 2 : 1
+
+                //possible just have a qrcode filler image here
+                Rectangle {
+                    width: 50
+                    height: 20
+                    color: "#6B6B6B"
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.leftMargin: 20
+                    anchors.rightMargin: 20
+                    anchors.topMargin: 30
+                    anchors.bottomMargin: 30
+                }
             }
             checkable: true
         }
@@ -114,38 +149,56 @@ Rectangle {
     }
 
     Text {
-        id: copyright
-        y: parent.height - 35
-        width: parent.width * 0.3
-        height: width / 4
-        color: "#898989"
-
-        text: qsTr("© 2025 EECS 497 Group 11")
+        id: barcodeText
+        width: barcode.width
+        height: width / 4.3
+        color: "#000000"
+        text: qsTr("Barcode")
+        font.pixelSize: height / 2
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
 
-        anchors.horizontalCenterOffset: 0
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: scanSelection.bottom
+        anchors.left: parent.left
+        anchors.leftMargin: 25
 
-        font.weight: Font.Normal
-        font.pointSize: 6
+        wrapMode: Text.NoWrap
+        font.weight: Font.Medium
         font.family: "Geist"
     }
+
+    Text {
+        width: qrcode.width
+        height: width / 4.3
+        color: "#000000"
+        text: qsTr("QR Code")
+        font.pixelSize: height / 2
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+
+        anchors.top: scanSelection.bottom
+        anchors.right: parent.right
+        anchors.rightMargin: 25
+
+        wrapMode: Text.NoWrap
+        font.weight: Font.Medium
+        font.family: "Geist"
+    }
+
 
     Rectangle {
         id: selectionBox
         color: "#cccccc"
+        height: 275
         radius: 7
         border.color: "#000000"
         border.width: 1
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        anchors.leftMargin: 40
-        anchors.rightMargin: 40
-        anchors.topMargin: 298
-        anchors.bottomMargin: 152
+        anchors.top: barcodeText.bottom
+        anchors.leftMargin: 25
+        anchors.rightMargin: 25
+        anchors.topMargin: 15
 
         Column {
             id: selectionGroup
@@ -154,29 +207,26 @@ Rectangle {
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             anchors.leftMargin: 10
-            anchors.rightMargin: 10
-            anchors.topMargin: 10
-            anchors.bottomMargin: 10
-            spacing: 7
 
             RadioButton {
                 id: eventTicket
                 text: qsTr("Event Ticket")
-                font.pixelSize: 14
+                font.pixelSize: 20
                 font.family: "Geist"
+                font.weight: Font.Medium
                 checked: true
                 width: parent.width
 
                 indicator: Rectangle {
-                    implicitWidth: 14
-                    implicitHeight: 14
+                    implicitWidth: eventTicket.font.pixelSize
+                    implicitHeight: eventTicket.font.pixelSize
                     radius: 15
                     anchors.verticalCenter: parent.verticalCenter
                     border.color: "black"
 
                     Rectangle {
-                        width: 14
-                        height: 14
+                        width: eventTicket.font.pixelSize
+                        height: eventTicket.font.pixelSize
                         anchors.centerIn: parent
                         radius: 15
                         visible: eventTicket.checked
@@ -188,20 +238,21 @@ Rectangle {
             RadioButton {
                 id: boardingPass
                 text: qsTr("Boarding Pass")
-                font.pixelSize: 14
+                font.pixelSize: eventTicket.font.pixelSize
                 font.family: "Geist"
+                font.weight: Font.Medium
                 width: parent.width
 
                 indicator: Rectangle {
-                    implicitWidth: 14
-                    implicitHeight: 14
+                    implicitWidth: boardingPass.font.pixelSize
+                    implicitHeight: boardingPass.font.pixelSize
                     radius: 15
                     anchors.verticalCenter: parent.verticalCenter
                     border.color: "black"
 
                     Rectangle {
-                        width: 14
-                        height: 14
+                        width: boardingPass.font.pixelSize
+                        height: boardingPass.font.pixelSize
                         anchors.centerIn: parent
                         radius: 15
                         visible: boardingPass.checked
@@ -213,20 +264,21 @@ Rectangle {
             RadioButton {
                 id: storeCard
                 text: qsTr("Store Card")
-                font.pixelSize: 14
+                font.pixelSize: eventTicket.font.pixelSize
                 font.family: "Gesit"
+                font.weight: Font.Medium
                 width: parent.width
 
                 indicator: Rectangle {
-                    implicitWidth: 14
-                    implicitHeight: 14
+                    implicitWidth: storeCard.font.pixelSize
+                    implicitHeight: storeCard.font.pixelSize
                     radius: 15
                     anchors.verticalCenter: parent.verticalCenter
                     border.color: "black"
 
                     Rectangle {
-                        width: 14
-                        height: 14
+                        width: storeCard.font.pixelSize
+                        height: storeCard.font.pixelSize
                         anchors.centerIn: parent
                         radius: 15
                         visible: storeCard.checked
@@ -238,20 +290,21 @@ Rectangle {
             RadioButton {
                 id: coupon
                 text: qsTr("Coupon")
-                font.pixelSize: 14
+                font.pixelSize: eventTicket.font.pixelSize
                 font.family: "Geist"
+                font.weight: Font.Medium
                 width: parent.width
 
                 indicator: Rectangle {
-                    implicitWidth: 14
-                    implicitHeight: 14
+                    implicitWidth: coupon.font.pixelSize
+                    implicitHeight: coupon.font.pixelSize
                     radius: 15
                     anchors.verticalCenter: parent.verticalCenter
                     border.color: "black"
 
                     Rectangle {
-                        width: 14
-                        height: 14
+                        width: coupon.font.pixelSize
+                        height: coupon.font.pixelSize
                         anchors.centerIn: parent
                         radius: 15
                         visible: coupon.checked
@@ -263,20 +316,21 @@ Rectangle {
             RadioButton {
                 id: other
                 text: qsTr("Other")
-                font.pixelSize: 14
+                font.pixelSize: eventTicket.font.pixelSize
                 font.family: "Geist"
+                font.weight: Font.Medium
                 width: parent.width
 
                 indicator: Rectangle {
-                    implicitWidth: 14
-                    implicitHeight: 14
+                    implicitWidth: other.font.pixelSize
+                    implicitHeight: other.font.pixelSize
                     radius: 15
                     anchors.verticalCenter: parent.verticalCenter
                     border.color: "black"
 
                     Rectangle {
-                        width: 14
-                        height: 14
+                        width: other.font.pixelSize
+                        height: other.font.pixelSize
                         anchors.centerIn: parent
                         radius: 15
                         visible: other.checked
@@ -295,8 +349,10 @@ Rectangle {
         checkable: false
         radius: 15
 
-        y: copyright.y - 70
         anchors.horizontalCenter: parent.horizontalCenter
+
+        anchors.top: newPassScreen.contentHeight !== parent.height ? selectionBox.bottom : copyright.top
+        anchors.topMargin: newPassScreen.contentHeight !== parent.height ? 40 : -(newPass.height)
 
         background: Rectangle {
             color: "black"
@@ -318,36 +374,42 @@ Rectangle {
                 newPassScreen.goToScan()
             }
         }
-    }
 
-    Button {
-        id: backButton
-        text: qsTr("< Back")
-        width: 70
-        height: width / 3
-        checkable: false
-
-        y: title.y - 25
-        x: title.x
-
-        background: Rectangle {
-            color: "#d9d9d9"
-        }
-
-        contentItem: Text {
-            font.family: "Geist"
-            font.pointSize: 12
-            text: backButton.text
-            color: "black"
-            horizontalAlignment: Text.AlignLeft
-            verticalAlignment: Text.AlignVCenter
-        }
-
+        #DUNNO IF THIS WORKS, DELETE IF IT DOESNT - JUSTIN
         Connections {
-            target: backButton
+            target: newPass
             function onClicked() {
-                newPassScreen.backToHome()
+                // Save the selected pass type to the database
+                var passType = "Event Ticket"; // Default selected pass
+                if (boardingPass.checked) passType = "Boarding Pass";
+                else if (storeCard.checked) passType = "Store Card";
+                else if (coupon.checked) passType = "Coupon";
+                else if (other.checked) passType = "Other";
+                
+                // Call the database manager to store the selected pass type
+                DBManager.DatabaseManager.savePassType(passType);
+                newPassScreen.goToScan();
             }
         }
+    }
+
+    Text {
+        id: copyright
+        width: parent.width * 0.3
+        height: width / 4
+        color: "#898989"
+
+        anchors.top: newPassScreen.contentHeight !== parent.height ? newPass.bottom : parent.bottom
+        anchors.topMargin: newPassScreen.contentHeight !== parent.height ? 20 : -copyright.height
+
+        text: qsTr("© 2025 EECS 497 Group 11")
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+
+        anchors.horizontalCenter: parent.horizontalCenter
+
+        font.weight: Font.Normal
+        font.pointSize: height / 3
+        font.family: "Geist"
     }
 }

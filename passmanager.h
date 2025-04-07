@@ -4,6 +4,13 @@
 #include <QObject>
 #include "passlist.h"
 
+//singleton
+//QInvokable
+//List of QStrings
+//Functions to add and remove fields with an index
+//Will want minimum 1 field
+//When pass is saved, reset the fields
+
 class PassManager : public QObject
 {
     Q_OBJECT

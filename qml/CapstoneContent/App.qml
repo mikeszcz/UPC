@@ -6,8 +6,8 @@ import UPC
 import QtQuick.Controls 6.7
 
 Window {
-    width: Constants.width
-    height: Constants.height
+    width: 360
+    height: 640
 
     visible: true
     title: "Capstone"
@@ -106,6 +106,20 @@ Window {
             onTriggered: {
                 camerapopup.close()
                 // passinfo.open()
+            }
+        }
+    }
+
+    PermissionPopup {
+        id: permissionpopup
+
+        width: parent.width - 20
+        height: parent.height / 2
+
+        Connections {
+            target: Permissions
+            function onPermissionDenied(reason) {
+                permissionpopup.open()
             }
         }
     }

@@ -145,6 +145,9 @@ Flickable {
         }
     }
 
+    //Use repeated instead
+    //Target for repeater will be list property from list manager
+
     ListView {
         id: descriptionListView
         interactive: false
@@ -185,6 +188,8 @@ Flickable {
             }
         }
     }
+
+    //Will call the add field of pass manager
 
     Button {
         id: addNewField
